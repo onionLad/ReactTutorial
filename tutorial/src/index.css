@@ -1,0 +1,67 @@
+/*
+ * index.css
+ * Bill Xia
+ * 12/18/22
+ *
+ * Purpose: Describe the presentation of our HTML tick-tack-toe interface.
+ */
+
+/* Defines formatting of the body tag. */
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+}
+  
+/* Defines formatting of HTML lists. */
+ol, ul {
+    padding-left: 30px;
+}
+  
+/* Defines formatting of the after pseudo-class within the board-row class. */
+.board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+  
+/* Defines formatting of the status class. */
+.status {
+    margin-bottom: 10px;
+}
+  
+/* Defines formatting of the square class. */
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+}
+  
+/* Defines formatting of the focus pseudo-class within the square class. */
+.square:focus {
+    outline: none;
+}
+  
+/* Defines formatting of something. Seems to just set a background color. */
+.kbd-navigation .square:focus {
+    background: #ddd;
+}
+  
+/* Defines formatting of the game class. */
+.game {
+    display: flex;
+    flex-direction: row;
+}
+  
+/* Defines formatting of the game-info class. */
+.game-info {
+    margin-left: 20px;
+}
