@@ -19,35 +19,6 @@ import './index.css';
  *  CLASS DEFINITIONS                                                       *
 \* ======================================================================== */
 
-// /* Defines the Square class, which is a component of the Board class. */
-// class Square extends React.Component {
-
-//     /*
-//      * render
-//      * Returns a description of what gets displayed.
-//      */
-//     render() {
-//         return (
-//             <button
-//                 className="square"
-
-//                 /* 
-//                  * This line updates the Board state when the Square is 
-//                  * clicked.
-//                  * 
-//                  * Note: The "() =>" syntax essentially indicates a macro.
-//                  */
-//                 onClick={ () => this.props.onClick() }
-//             >
-
-//                 {this.props.value}
-
-//             </button>
-//         );
-//     }
-
-// }
-
 /*
  * Because the Square class only calls the render function and has no state
  * members, it can be replaced with a function component.
@@ -56,7 +27,7 @@ function Square(props) {
     return (
         <button
             className="square"
-            onClick={ props.onClick() }
+            onClick={ props.onClick }
         >
             {props.value}
         </button>
@@ -98,6 +69,15 @@ class Board extends React.Component {
          * class member.
          */
         const squares = this.state.squares.slice();
+
+        /* 
+         * Filthy chunk of code. Uses the "not false" bool trick. Also shows
+         * off JavaScript's disregard for types with the return nothing line.
+         */
+        if (calculateWinner(this.state.squares) || squares[i]) {
+            return;
+        }
+
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             squares: squares,
@@ -121,8 +101,22 @@ class Board extends React.Component {
     }
 
     render() {
-        const status = 'Next player: X';
+        
+        /* Display current game status. */
+        const winner = calculateWinner(this.state.squares);
+        let status;
 
+        /* 
+         * This trick works because anything that isn't 0 (null) evaluates to
+         * true. That is, a non-boolean value gets interpretted as a bool.
+         */
+        if (winner) {
+            status = 'Winner: ' + winner;
+        } else {
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
+
+        /* Render the Board. */
         return (
             <div>
                 <div className="status">{status}</div>
@@ -162,6 +156,40 @@ class Game extends React.Component {
         );
     }
 }
+
+/* ======================================================================== *\
+ *  HELPER FUNCTIONS                                                        *
+\* ======================================================================== */
+
+/* Checks if the current Board state has a victor. */
+function calculateWinner(squares) {
+    
+    /* 
+     * List of every horizontal, vertical, and diagonal line of three squares
+     * that can be drawn on the Board
+     */
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    /* This loop checks for three-in-a-row's. */
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+
+    /* If the loop found nothing, return NULL */
+    return null;
+  }
 
 /* ======================================================================== *\
  *  PROGRAM START                                                           *
